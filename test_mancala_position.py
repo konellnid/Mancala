@@ -104,5 +104,61 @@ class ExampleBoardTest(unittest.TestCase):
         self.assertEqual(returned_position, expected_position)
 
 
+class CapturingTest(unittest.TestCase):
+    def test_standard_capturing(self):
+        board = [0, 0, 1, 1, 0, 0, 10,
+                 1, 2, 3, 4, 5, 6, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        capturing_move = 3
+        expected_board = [0, 0, 1, 0, 0, 0, 13,
+                          1, 0, 3, 4, 5, 6, 20]
+        expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
+
+        returned_position = position.get_position_after_move(capturing_move)
+
+        self.assertEqual(returned_position, expected_position)
+
+    # capture doesn't occur if corresponding pocket is empty
+    def test_capturing_for_empty_enemy_pocket(self):
+        board = [0, 0, 1, 1, 0, 0, 10,
+                 1, 0, 3, 4, 5, 6, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        not_capturing_move = 3
+        expected_board = [0, 0, 1, 0, 1, 0, 10,
+                          1, 2, 3, 4, 5, 6, 20]
+        expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
+
+        returned_position = position.get_position_after_move(not_capturing_move)
+
+        self.assertEqual(returned_position, expected_position)
+
+    def test_full_circle_capturing(self):
+        board = [0, 0, 1, 13, 0, 0, 10,
+                 1, 2, 3, 4, 5, 6, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        full_circle_move = 3
+        expected_board = [1, 1, 2, 0, 1, 1, 15,
+                          2, 3, 0, 5, 6, 7, 20]
+        expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
+
+        returned_position = position.get_position_after_move(full_circle_move)
+
+        self.assertEqual(returned_position, expected_position)
+
+    # capturing can occur only on own pockets
+    def test_capture_on_enemy_pockets(self):
+        board = [0, 1, 0, 0, 3, 3, 10,
+                 0, 0, 3, 4, 5, 6, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        tested_move = 6
+        expected_board = [0, 1, 0, 0, 3, 0, 11,
+                          1, 1, 3, 4, 5, 6, 20]
+        expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
+
+        returned_position = position.get_position_after_move(tested_move)
+
+        self.assertEqual(returned_position, expected_position)
+
+
 if __name__ == '__main__':
     unittest.main()
