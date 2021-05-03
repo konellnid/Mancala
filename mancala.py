@@ -26,3 +26,9 @@ class MancalaPosition:
 
     def get_position_after_move_sequence(self, move_sequence: List[List[int]]) -> MancalaPosition:
         pass
+
+    def __eq__(self, other):
+        if isinstance(other, MancalaPosition):
+            return self.board == other.board and self.is_player_a_move == other.is_player_a_move
+        else:
+            return False
