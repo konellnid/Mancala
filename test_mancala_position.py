@@ -160,5 +160,46 @@ class CapturingTest(unittest.TestCase):
         self.assertEqual(returned_position, expected_position)
 
 
+class EdgeCaseTest(unittest.TestCase):
+    def test_enemy_store_omitting(self):
+        board = [0, 0, 0, 1, 2, 0, 8,
+                 0, 0, 0, 14, 0, 0, 4]
+        position = MancalaPosition(board, not IS_PLAYER_A_MOVE)
+        tested_move = 10
+        expected_board = [1, 1, 1, 2, 3, 1, 8,
+                          1, 1, 1, 1, 2, 1, 5]
+        expected_position = MancalaPosition(expected_board, IS_PLAYER_A_MOVE)
+
+        returned_position = position.get_position_after_move(tested_move)
+
+        self.assertEqual(returned_position.board[PLAYER_A_STORE], expected_position.board[PLAYER_A_STORE],
+                         msg="Store of player A should remain unchanged")
+        self.assertEqual(returned_position, expected_position)
+
+    def test_finishing_game_after_standard_move(self):
+        board = [0, 1, 2, 0, 4, 0, 10,
+                 0, 0, 0, 0, 0, 0, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        finishing_move = 2
+        expected_board = [0, 0, 0, 0, 0, 0, 17,
+                          0, 0, 0, 0, 0, 0, 20]
+
+        returned_position = position.get_position_after_move(finishing_move)
+
+        self.assertEqual(returned_position.board, expected_board)
+
+    def test_finishing_game_with_additional_turn_move(self):
+        board = [0, 0, 0, 0, 0, 1, 10,
+                 0, 3, 0, 4, 0, 0, 20]
+        position = MancalaPosition(board, IS_PLAYER_A_MOVE)
+        finishing_move = 6
+        expected_board = [0, 0, 0, 0, 0, 0, 11,
+                          0, 0, 0, 0, 0, 0, 27]
+
+        returned_position = position.get_position_after_move(finishing_move)
+
+        self.assertEqual(returned_position.board, expected_board)
+
+
 if __name__ == '__main__':
     unittest.main()
