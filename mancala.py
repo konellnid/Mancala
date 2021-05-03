@@ -24,7 +24,7 @@ class MancalaPosition:
     def get_possible_move_sequences(self) -> List[List[int]]:
         pass
 
-    def get_position_after_move_sequence(self, move_sequence: List[List[int]]) -> MancalaPosition:
+    def get_position_after_move_sequence(self, move_sequence: List[int]) -> MancalaPosition:
         pass
 
     def __eq__(self, other):
