@@ -192,7 +192,7 @@ class EdgeCaseTest(unittest.TestCase):
         board = [0, 0, 0, 0, 0, 1, 10,
                  0, 3, 0, 4, 0, 0, 20]
         position = MancalaPosition(board, IS_PLAYER_A_MOVE)
-        finishing_move = 6
+        finishing_move = 5
         expected_board = [0, 0, 0, 0, 0, 0, 11,
                           0, 0, 0, 0, 0, 0, 27]
 
