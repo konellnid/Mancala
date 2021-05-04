@@ -194,3 +194,6 @@ class MancalaPosition:
             print('Player B won!')
         else:
             print('Draw!')
+
+    def get_players_seeds_in_stores(self):
+        return self.board[PLAYER_A_STORE], self.board[PLAYER_B_STORE]
