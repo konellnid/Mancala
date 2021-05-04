@@ -16,6 +16,7 @@ CORRESPONDING_POCKETS = {
     0: 12, 1: 11, 2: 10, 3: 9, 4: 8, 5: 7,
     7: 5, 8: 4, 9: 3, 10: 2, 11: 1, 12: 0
 }
+RIGHT_ALIGNMENT_SIZE = 4
 
 
 class MancalaPosition:
@@ -99,6 +100,37 @@ class MancalaPosition:
             current_position = current_position.get_position_after_move(move)
 
         return current_position
+
+    def print_position(self):
+        player_b_pockets_indexes = ""
+        player_b_pockets_seeds = ""
+        store_info = ""
+        player_a_pockets_indexes = ""
+        player_a_pockets_seeds = ""
+
+        for pocket_index in PLAYER_B_POCKETS:
+            aligned_index = str(pocket_index).rjust(RIGHT_ALIGNMENT_SIZE)
+            aligned_seeds = str(self.board[pocket_index]).rjust(RIGHT_ALIGNMENT_SIZE)
+            player_b_pockets_indexes = aligned_index + player_b_pockets_indexes
+            player_b_pockets_seeds = aligned_seeds + player_b_pockets_seeds
+
+        for pocket_index in PLAYER_A_POCKETS:
+            aligned_index = str(pocket_index).rjust(RIGHT_ALIGNMENT_SIZE)
+            aligned_seeds = str(self.board[pocket_index]).rjust(RIGHT_ALIGNMENT_SIZE)
+            player_a_pockets_indexes = player_a_pockets_indexes + aligned_index
+            player_a_pockets_seeds = player_a_pockets_seeds + aligned_seeds
+
+        player_a_seeds = self.board[PLAYER_A_STORE]
+        player_b_seeds = self.board[PLAYER_B_STORE]
+        a_store_aligned = str(player_a_seeds).rjust(2)
+        b_store_aligned = str(player_b_seeds).rjust(2)
+        store_info = b_store_aligned + ('-' * (6 * RIGHT_ALIGNMENT_SIZE)) + a_store_aligned
+
+        print('B indexes: ' + player_b_pockets_indexes)
+        print('B pockets: ' + player_b_pockets_seeds)
+        print('stores    ' + store_info)
+        print('A pockets: ' + player_a_pockets_seeds)
+        print('A indexes: ' + player_a_pockets_indexes)
 
     def __eq__(self, other):
         if isinstance(other, MancalaPosition):
