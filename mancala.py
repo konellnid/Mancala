@@ -89,6 +89,9 @@ class MancalaPosition:
                 for additional_move_sequence in move_sequences_from_position:
                     new_move_sequence = [possible_move] + additional_move_sequence
                     possible_move_sequences.append(new_move_sequence)
+
+                if len(move_sequences_from_position) == 0:
+                    possible_move_sequences.append([possible_move])
             else:
                 possible_move_sequences.append([possible_move])
 
@@ -208,7 +211,10 @@ class MancalaPosition:
 
             if self.is_player_a_move == after_move_position.is_player_a_move:
                 reachable_positions_after_move = after_move_position.get_reachable_positions_for_current_player()
-                reachable_positions = reachable_positions + reachable_positions_after_move
+                if len(reachable_positions_after_move) == 0:
+                    reachable_positions.append(after_move_position)
+                else:
+                    reachable_positions = reachable_positions + reachable_positions_after_move
             else:
                 reachable_positions.append(after_move_position)
 
