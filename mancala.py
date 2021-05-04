@@ -16,7 +16,14 @@ class MancalaPosition:
         self.is_player_a_move = is_player_a_move
 
     def get_possible_moves(self) -> List[int]:
-        pass
+        possible_moves = []
+        indexes_to_check = self.get_pockets_to_check()
+
+        for pocket_index in indexes_to_check:
+            if self.board[pocket_index] > 0:
+                possible_moves.append(pocket_index)
+
+        return possible_moves
 
     def get_position_after_move(self, move: int) -> MancalaPosition:
         pass
@@ -32,3 +39,9 @@ class MancalaPosition:
             return self.board == other.board and self.is_player_a_move == other.is_player_a_move
         else:
             return False
+
+    def get_pockets_to_check(self):
+        if self.is_player_a_move:
+            return PLAYER_A_POCKETS
+        else:
+            return PLAYER_B_POCKETS
