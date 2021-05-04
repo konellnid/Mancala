@@ -181,3 +181,16 @@ class MancalaPosition:
                 self.board[pocket_index] = 0
 
         self.board[store_to_add_seeds] = self.board[store_to_add_seeds] + number_of_remaining_seeds
+
+    def print_end_game_info(self):
+        player_a_seeds = self.board[PLAYER_A_STORE]
+        player_b_seeds = self.board[PLAYER_B_STORE]
+
+        print('A vs B')
+        print(f'{player_a_seeds} - {player_b_seeds}')
+        if player_a_seeds > player_b_seeds:
+            print('Player A won!')
+        elif player_b_seeds > player_a_seeds:
+            print('Player B won!')
+        else:
+            print('Draw!')
