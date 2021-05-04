@@ -197,3 +197,19 @@ class MancalaPosition:
 
     def get_players_seeds_in_stores(self):
         return self.board[PLAYER_A_STORE], self.board[PLAYER_B_STORE]
+
+    def get_reachable_positions_for_current_player(self):
+        reachable_positions = []
+
+        possible_moves = self.get_possible_moves()
+
+        for possible_move in possible_moves:
+            after_move_position = self.get_position_after_move(possible_move)
+
+            if self.is_player_a_move == after_move_position.is_player_a_move:
+                reachable_positions_after_move = after_move_position.get_reachable_positions_for_current_player()
+                reachable_positions = reachable_positions + reachable_positions_after_move
+            else:
+                reachable_positions.append(after_move_position)
+
+        return reachable_positions
