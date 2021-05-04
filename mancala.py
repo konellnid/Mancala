@@ -1,13 +1,21 @@
 from __future__ import annotations
 
+import copy
 from typing import List
 
 STARTING_BOARD = [4, 4, 4, 4, 4, 4, 0,
                   4, 4, 4, 4, 4, 4, 0]
+BOARD_LENGTH = 14
 PLAYER_A_POCKETS = [0, 1, 2, 3, 4, 5]
 PLAYER_A_STORE = 6
 PLAYER_B_POCKETS = [7, 8, 9, 10, 11, 12]
 PLAYER_B_STORE = 13
+NUMBER_OF_SEEDS_FOR_LOOP = 13
+
+CORRESPONDING_POCKETS = {
+    0: 12, 1: 11, 2: 10, 3: 9, 4: 8, 5: 7,
+    7: 5, 8: 4, 9: 3, 10: 2, 11: 1, 12: 0
+}
 
 
 class MancalaPosition:
@@ -26,7 +34,47 @@ class MancalaPosition:
         return possible_moves
 
     def get_position_after_move(self, move: int) -> MancalaPosition:
-        pass
+        updated_board = copy.deepcopy(self.board)
+
+        number_of_seeds = updated_board[move]
+        updated_board[move] = 0
+        current_index = move
+
+        while number_of_seeds > 0:
+            current_index = current_index + 1
+
+            if current_index == PLAYER_A_STORE and not self.is_player_a_move:
+                current_index = current_index + 1
+            elif current_index == PLAYER_B_STORE and self.is_player_a_move:
+                current_index = 0
+            elif current_index == BOARD_LENGTH:
+                current_index = 0
+
+            updated_board[current_index] = updated_board[current_index] + 1
+            number_of_seeds = number_of_seeds - 1
+
+        is_next_turn_player_a_move = not self.is_player_a_move
+
+        # check if player gets additional turn
+        if self.is_move_end_in_store(move):
+            is_next_turn_player_a_move = self.is_player_a_move
+            # check for capture
+        elif updated_board[current_index] == 1 and current_index in self.get_pockets_to_check():
+            corresponding_index = CORRESPONDING_POCKETS[current_index]
+            number_of_seeds_in_corresponding_pocket = updated_board[corresponding_index]
+            if number_of_seeds_in_corresponding_pocket > 0:
+                updated_board[current_index] = 0
+                updated_board[corresponding_index] = 0
+
+                captured_seeds = number_of_seeds_in_corresponding_pocket + 1
+                current_player_store = self.get_current_player_store_index()
+                updated_board[current_player_store] = updated_board[current_player_store] + captured_seeds
+
+        updated_position = MancalaPosition(updated_board, is_next_turn_player_a_move)
+        if updated_position.is_game_finished():
+            updated_position.finish_game()
+
+        return MancalaPosition(updated_board, is_next_turn_player_a_move)
 
     def get_possible_move_sequences(self) -> List[List[int]]:
         pass
@@ -45,3 +93,41 @@ class MancalaPosition:
             return PLAYER_A_POCKETS
         else:
             return PLAYER_B_POCKETS
+
+    def is_move_end_in_store(self, move):
+        number_of_seeds_to_check = self.board[move]
+
+        player_store_index = self.get_current_player_store_index()
+        offset_from_store = player_store_index - move
+
+        while number_of_seeds_to_check > offset_from_store:
+            # eliminate loop
+            number_of_seeds_to_check = number_of_seeds_to_check - NUMBER_OF_SEEDS_FOR_LOOP
+
+        return number_of_seeds_to_check == offset_from_store
+
+    def get_current_player_store_index(self):
+        if self.is_player_a_move:
+            return PLAYER_A_STORE
+        else:
+            return PLAYER_B_STORE
+
+    def is_game_finished(self):
+        possible_moves = self.get_possible_moves()
+
+        return len(possible_moves) == 0
+
+    def finish_game(self):
+        if self.is_player_a_move:
+            self.move_remaining_seeds_to_store(PLAYER_B_POCKETS, PLAYER_B_STORE)
+        else:
+            self.move_remaining_seeds_to_store(PLAYER_A_POCKETS, PLAYER_A_STORE)
+
+    def move_remaining_seeds_to_store(self, pockets_to_check, store_to_add_seeds):
+        number_of_remaining_seeds = 0
+        for pocket_index in pockets_to_check:
+            if self.board[pocket_index] > 0:
+                number_of_remaining_seeds = number_of_remaining_seeds + self.board[pocket_index]
+                self.board[pocket_index] = 0
+
+        self.board[store_to_add_seeds] = self.board[store_to_add_seeds] + number_of_remaining_seeds
