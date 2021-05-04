@@ -150,7 +150,7 @@ class CapturingTest(unittest.TestCase):
         board = [0, 1, 0, 0, 3, 3, 10,
                  0, 0, 3, 4, 5, 6, 20]
         position = MancalaPosition(board, IS_PLAYER_A_MOVE)
-        tested_move = 6
+        tested_move = 5
         expected_board = [0, 1, 0, 0, 3, 0, 11,
                           1, 1, 3, 4, 5, 6, 20]
         expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
