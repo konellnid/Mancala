@@ -77,10 +77,28 @@ class MancalaPosition:
         return MancalaPosition(updated_board, is_next_turn_player_a_move)
 
     def get_possible_move_sequences(self) -> List[List[int]]:
-        pass
+        possible_move_sequences = []
+        possible_moves = self.get_possible_moves()
+
+        for possible_move in possible_moves:
+            if self.is_move_end_in_store(possible_move):
+                position_from_move = self.get_position_after_move(possible_move)
+                move_sequences_from_position = position_from_move.get_possible_move_sequences()
+
+                for additional_move_sequence in move_sequences_from_position:
+                    new_move_sequence = [possible_move] + additional_move_sequence
+                    possible_move_sequences.append(new_move_sequence)
+            else:
+                possible_move_sequences.append([possible_move])
+
+        return possible_move_sequences
 
     def get_position_after_move_sequence(self, move_sequence: List[int]) -> MancalaPosition:
-        pass
+        current_position = self
+        for move in move_sequence:
+            current_position = current_position.get_position_after_move(move)
+
+        return current_position
 
     def __eq__(self, other):
         if isinstance(other, MancalaPosition):
