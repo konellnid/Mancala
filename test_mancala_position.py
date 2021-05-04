@@ -125,7 +125,7 @@ class CapturingTest(unittest.TestCase):
         position = MancalaPosition(board, IS_PLAYER_A_MOVE)
         not_capturing_move = 3
         expected_board = [0, 0, 1, 0, 1, 0, 10,
-                          1, 2, 3, 4, 5, 6, 20]
+                          1, 0, 3, 4, 5, 6, 20]
         expected_position = MancalaPosition(expected_board, not IS_PLAYER_A_MOVE)
 
         returned_position = position.get_position_after_move(not_capturing_move)
