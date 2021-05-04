@@ -42,7 +42,10 @@ class ExampleBoardTest(unittest.TestCase):
 
     def test_move_sequences_for_player_a(self):
         example_position = MancalaPosition(EXAMPLE_BOARD, IS_PLAYER_A_MOVE)
-        expected_move_sequences = [[2], [5], [3, 2], [3, 5]]
+        expected_move_sequences = [[2], [5], [3, 2], [3, 4], [3, 5]]
+        # board after move 3 (adds a single seed at pocket 4)
+        # [0, 0, 3, 0, 1, 3, 4,
+        #  0, 0, 0, 1, 2, 0, 4]
 
         returned_move_sequences = example_position.get_possible_move_sequences()
 
@@ -57,8 +60,15 @@ class ExampleBoardTest(unittest.TestCase):
         self.assertCountEqual(returned_moves, expected_moves)
 
     def test_move_sequences_for_player_b(self):
-        example_position = MancalaPosition(EXAMPLE_BOARD, IS_PLAYER_A_MOVE)
-        expected_move_sequences = [[10], [11, 10]]
+        example_position = MancalaPosition(EXAMPLE_BOARD, not IS_PLAYER_A_MOVE)
+        expected_move_sequences = [[10], [11, 10], [11, 12, 10]]
+        # board after move 11
+        # [0, 0, 3, 3, 0, 2, 3,
+        #  0, 0, 0, 1, 0, 1, 5]
+        # from this position, move 12 will grant player another move
+        # board after moves: 11, 12
+        # [0, 0, 3, 3, 0, 2, 3,
+        #  0, 0, 0, 1, 0, 0, 6]
 
         returned_move_sequences = example_position.get_possible_move_sequences()
 
