@@ -13,8 +13,9 @@ class Player:
 
 
 class GameControllerSettings:
-    def __init__(self, should_make_first_random_move=True):
+    def __init__(self, should_make_first_random_move=True, should_first_player_be_chosen_at_random=True):
         self.should_make_first_random_move = should_make_first_random_move
+        self.should_first_player_be_chosen_at_random = should_first_player_be_chosen_at_random
 
 
 class GameController:
@@ -25,6 +26,10 @@ class GameController:
         self.position: MancalaPosition = MancalaPosition(STARTING_BOARD, IS_PLAYER_A_STARTING)
 
     def run_game(self):
+        if self.game_controller_settings.should_first_player_be_chosen_at_random:
+            is_player_a_going_first = random.choice([True, False])
+            self.position.is_player_a_move = is_player_a_going_first
+
         if self.game_controller_settings.should_make_first_random_move:
             possible_moves = self.position.get_possible_moves()
             random_first_move = random.choice(possible_moves)

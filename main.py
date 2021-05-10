@@ -8,7 +8,8 @@ if __name__ == "__main__":
     default_evaluation_function_settings = EvaluationFunctionSettings()
     evaluation_function = EvaluationFunction(default_evaluation_function_settings)
 
-    game_controller_settings = GameControllerSettings(should_make_first_random_move=True)
+    game_controller_settings = GameControllerSettings(should_make_first_random_move=True,
+                                                      should_first_player_be_chosen_at_random=True)
     game_controller = GameController(MinMaxPlayer(2, evaluation_function),
                                      MinMaxPlayer(5, evaluation_function), game_controller_settings)
     # game_controller = GameController(HumanPlayer(), HumanPlayer())
