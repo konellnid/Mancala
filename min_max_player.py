@@ -10,6 +10,7 @@ MAX_BOUND = 1000000
 
 class MinMaxPlayer(Player):
     def __init__(self, max_depth: int, evaluation_function: EvaluationFunction):
+        super().__init__()
         self.max_depth = max_depth
         self.current_move_sequence = []
         self.evaluation_function = evaluation_function
@@ -19,10 +20,12 @@ class MinMaxPlayer(Player):
             chosen_move = self.current_move_sequence.pop(0)
             return chosen_move
         else:
+            self.info_choose_move_started()
             chosen_position = self.choose_best_reachable_position(position)
             chosen_move_sequence = position.find_move_sequence_leading_to(chosen_position)
 
             self.current_move_sequence = chosen_move_sequence
+            self.info_choose_move_ended()
             return self.current_move_sequence.pop(0)
 
     def choose_best_reachable_position(self, position):
@@ -47,6 +50,7 @@ class MinMaxPlayer(Player):
         return best_found_position
 
     def choose_max_from_position(self, current_position, current_depth):
+        self.info_new_node()
         current_max = MIN_BOUND
 
         if current_depth < self.max_depth:
@@ -64,6 +68,7 @@ class MinMaxPlayer(Player):
             return self.evaluation_function.evaluate(current_position)
 
     def choose_min_from_position(self, current_position, current_depth):
+        self.info_new_node()
         current_min = MAX_BOUND
 
         if current_depth < self.max_depth:

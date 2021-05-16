@@ -1,5 +1,7 @@
 import copy
 import random
+import time
+from statistics import mean
 
 from mancala import MancalaPosition, STARTING_BOARD
 from typing import List
@@ -7,7 +9,61 @@ from typing import List
 IS_PLAYER_A_STARTING = True
 
 
+class PlayerData:
+    def __init__(self):
+        self.nodes_counter_list = []
+        self.current_tree_nodes_counter = 0
+
+        self.move_times = []
+        self.current_choosing_start_time = -1
+
+    def save_current_nodes_counter(self):
+        self.nodes_counter_list.append(self.current_tree_nodes_counter)
+
+    def new_node_is_being_visited(self):
+        self.current_tree_nodes_counter = self.current_tree_nodes_counter + 1
+
+    def save_current_choosing_time(self):
+        self.move_times.append(time.time() - self.current_choosing_start_time)
+
+    def new_move_is_being_chosen(self):
+        self.current_choosing_start_time = time.time()
+        self.current_tree_nodes_counter = 0
+
+
+class GameInfo:
+    def __init__(self, player_a_data: PlayerData, player_b_data: PlayerData):
+        self.player_a_data = player_a_data
+        self.player_b_data = player_b_data
+
+        self.player_a_avg_nodes_visited = mean(player_a_data.nodes_counter_list)
+        self.player_b_avg_nodes_visited = mean(player_b_data.nodes_counter_list)
+
+        self.player_a_avg_move_time = mean(player_a_data.move_times)
+        self.player_b_avg_move_time = mean(player_b_data.move_times)
+
+    def print_game_info(self):
+        print('Player A avg time: ', self.player_a_avg_move_time)
+        print('Player B avg time: ', self.player_b_avg_move_time)
+        print()
+        print('Player A avg nodes visited: ', self.player_a_avg_nodes_visited)
+        print('Player B avg nodes visited: ', self.player_b_avg_nodes_visited)
+
+
 class Player:
+    def __init__(self):
+        self.player_data = PlayerData()
+
+    def info_choose_move_started(self):
+        self.player_data.new_move_is_being_chosen()
+
+    def info_choose_move_ended(self):
+        self.player_data.save_current_choosing_time()
+        self.player_data.save_current_nodes_counter()
+
+    def info_new_node(self):
+        self.player_data.new_node_is_being_visited()
+
     def choose_move(self, position: MancalaPosition, possible_moves: List[int]) -> int:
         pass
 
@@ -57,6 +113,8 @@ class GameController:
         print('FINAL POSITION')
         self.print_current_position_info()
         self.position.print_end_game_info()
+
+        return GameInfo(self.player_a.player_data, self.player_b.player_data)
 
     def print_current_position_info(self):
         if self.position.is_player_a_move:
