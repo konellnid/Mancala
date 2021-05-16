@@ -50,7 +50,7 @@ class MinMaxPlayer(Player):
         return best_found_position
 
     def choose_max_from_position(self, current_position, current_depth):
-        self.info_new_node()
+        # self.info_new_node()
         current_max = MIN_BOUND
 
         if current_depth < self.max_depth:
@@ -68,7 +68,7 @@ class MinMaxPlayer(Player):
             return self.evaluation_function.evaluate(current_position)
 
     def choose_min_from_position(self, current_position, current_depth):
-        self.info_new_node()
+        # self.info_new_node()
         current_min = MAX_BOUND
 
         if current_depth < self.max_depth:
