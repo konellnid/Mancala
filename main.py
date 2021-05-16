@@ -20,22 +20,26 @@ def open_saved_infos(title):
         return infos_to_load
 
 
+def run_for_task_3_data(depth: int, eval_function: EvaluationFunction, settings: GameControllerSettings):
+    infos_to_save = []
+    for i in range(10):
+        controller = GameController(MinMaxPlayer(depth, eval_function),
+                                    AlphaBetaPlayer(depth, eval_function), settings)
+        game_info = controller.run_game()
+        infos_to_save.append(game_info)
+
+    title = 'task3_mm-ab_' + str(depth)
+    save_game_infos(infos_to_save, title)
+
+
 if __name__ == "__main__":
     default_evaluation_function_settings = EvaluationFunctionSettings()
     evaluation_function = EvaluationFunction(default_evaluation_function_settings)
 
     game_controller_settings = GameControllerSettings(should_make_first_random_move=True,
                                                       should_first_player_be_chosen_at_random=True)
-    game_controller = GameController(MinMaxPlayer(3, evaluation_function),
-                                     AlphaBetaPlayer(3, evaluation_function), game_controller_settings)
-    # game_controller = GameController(HumanPlayer(), HumanPlayer(), game_controller_settings)
-    # game_controller = GameController(RandomMovePlayer(), RandomMovePlayer(), game_controller_settings)
-    # just choose any two players
 
-    game_data = game_controller.run_game()
-
-    game_data.print_game_info()
-
-    infos = [game_data]
-    save_game_infos(infos, 'minmax_3-ab_3')
-    infos_loaded = open_saved_infos('minmax_3-ab_3')
+    # run_for_task_3_data(3, evaluation_function, game_controller_settings)
+    # run_for_task_3_data(4, evaluation_function, game_controller_settings)
+    # run_for_task_3_data(5, evaluation_function, game_controller_settings)
+    # run_for_task_3_data(6, evaluation_function, game_controller_settings)
