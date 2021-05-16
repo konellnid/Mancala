@@ -32,7 +32,7 @@ class PlayerData:
 
 
 class GameInfo:
-    def __init__(self, player_a_data: PlayerData, player_b_data: PlayerData):
+    def __init__(self, player_a_data: PlayerData, player_b_data: PlayerData, player_a_seeds, player_b_seeds):
         self.player_a_data = player_a_data
         self.player_b_data = player_b_data
 
@@ -42,12 +42,18 @@ class GameInfo:
         self.player_a_avg_move_time = mean(player_a_data.move_times)
         self.player_b_avg_move_time = mean(player_b_data.move_times)
 
+        self.player_a_seeds = player_a_seeds
+        self.player_b_seeds = player_b_seeds
+
     def print_game_info(self):
         print('Player A avg time: ', self.player_a_avg_move_time)
         print('Player B avg time: ', self.player_b_avg_move_time)
         print()
         print('Player A avg nodes visited: ', self.player_a_avg_nodes_visited)
         print('Player B avg nodes visited: ', self.player_b_avg_nodes_visited)
+        print()
+        print('Player A seeds in store: ', self.player_a_seeds)
+        print('Player B seeds in store: ', self.player_b_seeds)
 
 
 class Player:
@@ -113,8 +119,9 @@ class GameController:
         print('FINAL POSITION')
         self.print_current_position_info()
         self.position.print_end_game_info()
+        player_a_seeds, player_b_seeds = self.position.get_players_seeds_in_stores()
 
-        return GameInfo(self.player_a.player_data, self.player_b.player_data)
+        return GameInfo(self.player_a.player_data, self.player_b.player_data, player_a_seeds, player_b_seeds)
 
     def print_current_position_info(self):
         if self.position.is_player_a_move:
