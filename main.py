@@ -1,6 +1,8 @@
 import pickle
 
-from game_controller import GameController, Player, GameControllerSettings
+from typing import List
+
+from game_controller import *
 from human_player import HumanPlayer
 from min_max_player import MinMaxPlayer
 from evaluation_function import *
@@ -32,6 +34,27 @@ def run_for_task_3_data(depth: int, eval_function: EvaluationFunction, settings:
     save_game_infos(infos_to_save, title)
 
 
+def show_data_from_task_3(depth: int):
+    title = 'task3_mm-ab_' + str(depth)
+    infos: List[GameInfo] = open_saved_infos(title)
+
+    avg_a_time = mean(o.player_a_avg_move_time for o in infos)
+    avg_b_time = mean(o.player_b_avg_move_time for o in infos)
+    avg_a_nodes = mean(o.player_a_avg_nodes_visited for o in infos)
+    avg_b_nodes = mean(o.player_b_avg_nodes_visited for o in infos)
+    avg_a_seeds = mean(o.player_a_seeds for o in infos)
+    avg_b_seeds = mean(o.player_b_seeds for o in infos)
+
+    print('Info for depth=', depth)
+    print('A time', avg_a_time)
+    print('B time', avg_b_time)
+    print('A nodes', avg_a_nodes)
+    print('B nodes', avg_b_nodes)
+    print('A seeds', avg_a_seeds)
+    print('B seeds', avg_b_seeds)
+    print()
+
+
 if __name__ == "__main__":
     default_evaluation_function_settings = EvaluationFunctionSettings()
     evaluation_function = EvaluationFunction(default_evaluation_function_settings)
@@ -43,3 +66,10 @@ if __name__ == "__main__":
     # run_for_task_3_data(4, evaluation_function, game_controller_settings)
     # run_for_task_3_data(5, evaluation_function, game_controller_settings)
     # run_for_task_3_data(6, evaluation_function, game_controller_settings)
+    # run_for_task_3_data(7, evaluation_function, game_controller_settings)
+
+    show_data_from_task_3(3)
+    show_data_from_task_3(4)
+    show_data_from_task_3(5)
+    show_data_from_task_3(6)
+    show_data_from_task_3(7)
