@@ -20,7 +20,7 @@ class AlphaBetaPlayer(Player):
             return chosen_move
         else:
             chosen_position = self.choose_best_reachable_position(position)
-            chosen_move_sequence = self.find_move_sequece(position, chosen_position)
+            chosen_move_sequence = position.find_move_sequence_leading_to(chosen_position)
 
             self.current_move_sequence = chosen_move_sequence
             return self.current_move_sequence.pop(0)
@@ -87,10 +87,3 @@ class AlphaBetaPlayer(Player):
                 return self.evaluation_function.evaluate(current_position)
         else:
             return self.evaluation_function.evaluate(current_position)
-
-    def find_move_sequece(self, current_position, chosen_position):
-        move_sequences = current_position.get_possible_move_sequences()
-
-        for move_sequence in move_sequences:
-            if current_position.get_position_after_move_sequence(move_sequence) == chosen_position:
-                return move_sequence

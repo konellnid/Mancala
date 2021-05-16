@@ -219,3 +219,10 @@ class MancalaPosition:
                 reachable_positions.append(after_move_position)
 
         return reachable_positions
+
+    def find_move_sequence_leading_to(self, chosen_position):
+        move_sequences = self.get_possible_move_sequences()
+
+        for move_sequence in move_sequences:
+            if self.get_position_after_move_sequence(move_sequence) == chosen_position:
+                return move_sequence
