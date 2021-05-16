@@ -19,13 +19,13 @@ class AlphaBetaPlayer(Player):
             chosen_move = self.current_move_sequence.pop(0)
             return chosen_move
         else:
-            chosen_position = self.choose_best_reachable_position(position, 0)
+            chosen_position = self.choose_best_reachable_position(position)
             chosen_move_sequence = self.find_move_sequece(position, chosen_position)
 
             self.current_move_sequence = chosen_move_sequence
             return self.current_move_sequence.pop(0)
 
-    def choose_best_reachable_position(self, position, current_depth):
+    def choose_best_reachable_position(self, position):
         reachable_positions = position.get_reachable_positions_for_current_player()
         best_found_position = reachable_positions[0]
 
