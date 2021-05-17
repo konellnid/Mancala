@@ -4,6 +4,7 @@ from typing import List
 
 from game_controller import *
 from human_player import HumanPlayer
+from iterative_deepening_player import IterativeDeepeningPlayer
 from min_max_player import MinMaxPlayer
 from evaluation_function import *
 from aplha_beta_player import *
@@ -67,9 +68,15 @@ if __name__ == "__main__":
     # run_for_task_3_data(5, evaluation_function, game_controller_settings)
     # run_for_task_3_data(6, evaluation_function, game_controller_settings)
     # run_for_task_3_data(7, evaluation_function, game_controller_settings)
+    #
+    # show_data_from_task_3(3)
+    # show_data_from_task_3(4)
+    # show_data_from_task_3(5)
+    # show_data_from_task_3(6)
+    # show_data_from_task_3(7)
 
-    show_data_from_task_3(3)
-    show_data_from_task_3(4)
-    show_data_from_task_3(5)
-    show_data_from_task_3(6)
-    show_data_from_task_3(7)
+    controller = GameController(AlphaBetaPlayer(2, evaluation_function),
+                                IterativeDeepeningPlayer(10, 2, AlphaBetaPlayer(1, evaluation_function)),
+                                game_controller_settings)
+    game_info = controller.run_game()
+    game_info.print_game_info()

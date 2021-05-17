@@ -17,6 +17,9 @@ class PlayerData:
         self.move_times = []
         self.current_choosing_start_time = -1
 
+        self.depths = []
+        self.current_iteration_depth = 0
+
     def save_current_nodes_counter(self):
         self.nodes_counter_list.append(self.current_tree_nodes_counter)
 
@@ -26,9 +29,13 @@ class PlayerData:
     def save_current_choosing_time(self):
         self.move_times.append(time.time() - self.current_choosing_start_time)
 
+    def save_current_depth(self):
+        self.depths.append(self.current_iteration_depth)
+
     def new_move_is_being_chosen(self):
         self.current_choosing_start_time = time.time()
         self.current_tree_nodes_counter = 0
+        self.current_iteration_depth = 0
 
 
 class GameInfo:
@@ -45,6 +52,9 @@ class GameInfo:
         self.player_a_seeds = player_a_seeds
         self.player_b_seeds = player_b_seeds
 
+        self.player_a_avg_depth = mean(player_a_data.depths)
+        self.player_b_avg_depth = mean(player_b_data.depths)
+
     def print_game_info(self):
         print('Player A avg time: ', self.player_a_avg_move_time)
         print('Player B avg time: ', self.player_b_avg_move_time)
@@ -54,6 +64,9 @@ class GameInfo:
         print()
         print('Player A seeds in store: ', self.player_a_seeds)
         print('Player B seeds in store: ', self.player_b_seeds)
+        print()
+        print('Player A avg depth: ', self.player_a_avg_depth)
+        print('Player B avg depth: ', self.player_b_avg_depth)
 
 
 class Player:
@@ -66,9 +79,13 @@ class Player:
     def info_choose_move_ended(self):
         self.player_data.save_current_choosing_time()
         self.player_data.save_current_nodes_counter()
+        self.player_data.save_current_depth()
 
     def info_new_node(self):
         self.player_data.new_node_is_being_visited()
+
+    def info_current_iteration_depth_limit(self, current_choose_depth):
+        self.player_data.current_iteration_depth = current_choose_depth
 
     def choose_move(self, position: MancalaPosition, possible_moves: List[int]) -> int:
         pass
