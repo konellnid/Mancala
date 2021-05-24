@@ -226,3 +226,19 @@ class MancalaPosition:
         for move_sequence in move_sequences:
             if self.get_position_after_move_sequence(move_sequence) == chosen_position:
                 return move_sequence
+
+    def get_player_a_beatable_pockets(self):
+        beatable = 0
+        for pocket_index in PLAYER_A_POCKETS:
+            if self.board[pocket_index] > 0 and self.board[CORRESPONDING_POCKETS[pocket_index]] == 0:
+                beatable = beatable + 1
+
+        return beatable
+
+    def get_player_b_beatable_pockets(self):
+        beatable = 0
+        for pocket_index in PLAYER_B_POCKETS:
+            if self.board[pocket_index] > 0 and self.board[CORRESPONDING_POCKETS[pocket_index]] == 0:
+                beatable = beatable + 1
+
+        return beatable
