@@ -62,8 +62,6 @@ def show_data_from_task_3(depth: int, is_iterative=False, max_seconds=0):
     avg_b_nodes = mean(o.player_b_avg_nodes_visited for o in infos)
     avg_a_seeds = mean(o.player_a_seeds for o in infos)
     avg_b_seeds = mean(o.player_b_seeds for o in infos)
-    avg_a_depth = mean(o.player_a_avg_depth for o in infos)
-    avg_b_depth = mean(o.player_b_avg_depth for o in infos)
 
     if is_iterative:
         print('Info for seconds:', max_seconds)
@@ -75,12 +73,15 @@ def show_data_from_task_3(depth: int, is_iterative=False, max_seconds=0):
     print('B nodes', avg_b_nodes)
     print('A seeds', avg_a_seeds)
     print('B seeds', avg_b_seeds)
-    print('A depth', avg_a_depth)
-    print('B depth', avg_b_depth)
+    if is_iterative:
+        avg_a_depth = mean(o.player_a_avg_depth for o in infos)
+        avg_b_depth = mean(o.player_b_avg_depth for o in infos)
+        print('A depth', avg_a_depth)
+        print('B depth', avg_b_depth)
     print()
 
 
-if __name__ == "__main__":
+def task_3_stuff():
     default_evaluation_function_settings = EvaluationFunctionSettings()
     evaluation_function = EvaluationFunction(default_evaluation_function_settings)
 
@@ -109,12 +110,16 @@ if __name__ == "__main__":
     # run_for_task_3_iterative_data(9, evaluation_function, game_controller_settings)
     # run_for_task_3_iterative_data(10, evaluation_function, game_controller_settings)
     #
-    show_data_from_task_3(2, is_iterative=True, max_seconds=2)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=3)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=4)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=5)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=6)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=7)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=8)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=9)
-    show_data_from_task_3(2, is_iterative=True, max_seconds=10)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=2)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=3)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=4)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=5)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=6)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=7)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=8)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=9)
+    # show_data_from_task_3(2, is_iterative=True, max_seconds=10)
+
+
+if __name__ == "__main__":
+    task_3_stuff()
