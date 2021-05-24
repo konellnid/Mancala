@@ -5,10 +5,11 @@ SECURED_DRAW_SEEDS = 24
 
 
 class EvaluationFunctionSettings:
-    def __init__(self, secured_win_points=3, secured_draw_points=1, beating_possibilities_points=0):
+    def __init__(self, secured_win_points=3, secured_draw_points=1, beating_possibilities_points=0, hoarding_points=0):
         self.secured_win_points = secured_win_points
         self.secured_draw_points = secured_draw_points
         self.beating_possibilities_points = beating_possibilities_points
+        self.hoarding_points = hoarding_points
 
 
 class EvaluationFunction:
@@ -35,5 +36,9 @@ class EvaluationFunction:
             beating_possibilities = beating_possibilities - position.get_player_a_beatable_pockets()
             beating_possibilities = beating_possibilities + position.get_player_b_beatable_pockets()
             evaluation = evaluation + beating_possibilities * self.settings.beating_possibilities_points
+
+        if self.settings.hoarding_points > 0:
+            hoarding_seeds = position.board[5] - position.board[12]
+            evaluation = evaluation + hoarding_seeds * self.settings.hoarding_points
 
         return evaluation
